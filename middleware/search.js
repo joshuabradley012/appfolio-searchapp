@@ -1,12 +1,10 @@
 /**
- * AppFolio Listing Search Tool
- * ./appfolio_search/search.js
+ * AppFolio Listing Search Middleware
+ * ./appfolio_searchapp//middleware/search.js
  * 03.19.2018
  * Josh Bradley
  * 
  * @requires puppeteer
- * @requires json2csv
- * @requires fs
  */
 
 module.exports = getListings;

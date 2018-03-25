@@ -3,5 +3,9 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script
+     include gtm_head.js
   body
+    noscript
+      include gtm_noscript.js
     block content

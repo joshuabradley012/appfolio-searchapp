@@ -10,8 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/joshuabradley012/appfolio_search.git"
   },
-  "name": "appfolio_search",
-  "version": "1.0.0",
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",

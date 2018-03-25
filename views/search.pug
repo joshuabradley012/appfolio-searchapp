@@ -1,16 +1,35 @@
 extends layout
 
 block content
-	form(action='search', method='post', id='appfolio-search', class='form login-system', autocomplete='off')
-		div(class='form-item search')
-			input(name='search', class='form-input', type='text', placeholder='Search')
-		div(class='form-item subdomains')
-			input(name='subdomains', class='form-input', type='text', placeholder='Subdomains: solarentals, rayrobertsrealty, ...')
-		div(class='form-item options')
-			input(type='radio', id='depth', value='depth')
-			label depth
-			input(type='radio', id='delay', value='delay')
-			label delay
-		div(class='form-item submit')
-			button(id='submit-btn', class='form-btn', type='submit') Search
+  div(class='grid-x grid-padding-x align-center')
+    div(class='small-8 cell') 
+      form(
+        action='/'
+        method='post'
+        id='appfolio-search'
+        class='form login-system'
+        autocomplete='off'
+      )
+        div(class='form-item search')
+          label Search
+          input(
+            name='search'
+            class='form-input'
+            type='text'
+            placeholder='section 8'
+          )
+        div(class='form-item subdomains')
+          label Subdomains
+          input(
+            name='subdomains'
+            class='form-input'
+            type='text'
+            placeholder='solarentals, rayrobertsrealty, ...'
+          )
+        div(class='form-item submit')
+          button(
+            id='submit-btn'
+            class='button'
+            type='submit'
+          r) Search
 

@@ -39,7 +39,7 @@ async function getListings(options) {
   const listingUrls = await scrapeSubdomains(subdomains);
   console.log('Seaching for "' + search + '"');
   
-  const allListings = await searchListings(search, listingUrls);
+  const allListings = await searchListings('[^no]?\s?' + search, listingUrls);
 
   if (Object.keys(allListings).length === 0 && allListings.constructor === Object) {
     console.log('No listings found.');

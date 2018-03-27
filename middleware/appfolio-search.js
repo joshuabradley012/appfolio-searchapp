@@ -5,7 +5,6 @@
  * Josh Bradley
  * 
  * @requires puppeteer
- * @requires json2csv
  */
 
 module.exports = getListings;

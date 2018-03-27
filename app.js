@@ -18,7 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 var searchRouter = require('./routes/search');
-
 app.use('/', searchRouter);
 
 // catch 404 and forward to error handler

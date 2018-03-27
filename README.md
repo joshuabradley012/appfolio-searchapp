@@ -6,7 +6,7 @@ Download the ZIP file and unzip it on your desktop or install GitHub and clone t
 
     sudo apt-get install git
     cd ~/Desktop
-    git clone git@github.com:joshuabradley012/appfolio_search.git
+    git clone git@github.com:joshuabradley012/appfolio-searchapp.git
 
 **Note:** `~/Desktop` is an example, you can save the folder anywhere.
 

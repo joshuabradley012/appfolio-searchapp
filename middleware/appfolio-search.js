@@ -129,6 +129,7 @@ async function searchListings(search, listingUrls) {
       await page.goto(allListingUrls[listing]);
 
       let results = await page.evaluate((search) => {
+        
         const html = document.all[0].outerHTML;
         const matches = html.match(new RegExp(search, 'gi'));
 

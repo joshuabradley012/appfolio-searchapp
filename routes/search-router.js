@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', async(req, res, next) => {
-	res.send(await appfolioSearch({ search: req.body.search, subdomains: req.body.subdomains }));
+  res.send(await appfolioSearch({ search: req.body.search, subdomains: req.body.subdomains }));
 });
 
 module.exports = router;

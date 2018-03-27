@@ -26,8 +26,10 @@ Install the dependencies:
 
 You can search through multiple domains in bulk and can customize your search string or search with [regex](http://www.regular-expressions.info/). Keep in mind this is a very rigid search; it searches for your input exactly (case insensitive), eg 'section' vs 'sections' will return different results but 'section' vs 'Section' will return the same.
 
+Start the app with this command:
+
     npm start
     
-To run `DEBUG` during development, use this command:
+To run a debugger during development, use this command:
 
     DEBUG=appfolio-searchapp:* & npm run devstart

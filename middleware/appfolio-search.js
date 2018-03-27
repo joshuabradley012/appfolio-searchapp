@@ -42,7 +42,7 @@ async function getListings(options) {
   
   const allListings = await searchListings('[^no]?\s?' + search, listingUrls);
 
-  if (Object.keys(allListings).length === 0 && allListings.constructor === Object) {
+  if (Object.keys(allListings).length === 0) {
     console.log('No listings found.');
     return allListings;
   }
@@ -76,7 +76,7 @@ async function scrapeSubdomains(subdomains){
       await page.goto(listingPage);
 
       listings[subdomains[subdomain]] = await page.evaluate((subdomains, subdomain) => {
-        
+
         const urlObject = new Object();
         const html = document.all[0].outerHTML;
         const urls = html.match(/<a.*?>.*?View Details.*?<\/a>/gi);

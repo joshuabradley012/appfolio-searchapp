@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
-var searchRouter = require('./routes/search');
+var searchRouter = require('./routes/search-router');
 app.use('/', searchRouter);
 
 // catch 404 and forward to error handler

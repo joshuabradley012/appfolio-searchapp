@@ -6,8 +6,6 @@ Download the ZIP file and unzip it on your desktop or install GitHub and clone t
 
     git clone git@github.com:joshuabradley012/appfolio-searchapp.git
 
-### Node
-
 Node is required, [install node](https://nodejs.org/):
 
     brew install node

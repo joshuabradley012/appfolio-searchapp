@@ -1,19 +1,20 @@
 /**
- * AppFolio Listing Search Middleware
- * ./appfolio_searchapp//middleware/appfolio_search.js
- * 03.19.2018
+ * AppFolio Listing Scraper
+ * ./appfolio-searchapp//middleware/scrape-appfolio.js
+ * 4/7/2018
  * Josh Bradley
  * 
  * @requires puppeteer
  */
-
-module.exports = getListings;
 
 /**
  * Dependencies
  */
 
 const puppeteer = require('puppeteer');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/listings');
+const Listing = require('../models/listing.js');
 
 /**
  * Collect data from listings and return a simple object
@@ -21,11 +22,14 @@ const puppeteer = require('puppeteer');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
+const options = new Object();
+options.subdomains = ['https://rohcs.appfolio.com', 'https://solarentals.appfolio.com'];
+
+getListings(options);
+
 async function getListings(options) {
 
   const subdomains = new Object();
-  const search = options.search;
-  const args = options.args;
   let inputSubdomains = options.subdomains.toString();
 
   inputSubdomains = inputSubdomains.replace(/\s*,\s*/, ',');
@@ -38,18 +42,27 @@ async function getListings(options) {
   }
 
   const listingUrls = await scrapeSubdomains(subdomains);
-  console.log('Seaching for "' + search + '"');
   
-  const allListings = await searchListings('[^no]?\s?' + search, listingUrls);
+  const allListings = await scrapeListings(listingUrls);
 
   if (Object.keys(allListings).length === 0) {
     console.log('No listings found.');
-    return allListings;
   }
 
   if (Object.keys(allListings).length > 0) {
-    console.log('Search complete.');
-    return allListings;
+    console.log('Scrape complete.');
+
+    mongoose.connection.db.dropCollection('listings', function(err) {
+      if (err) console.log(err);
+    });
+
+    let listingKeys = Object.keys(allListings);
+    for (const listing of listingKeys) {
+      new Listing(allListings[listing]).save().catch((err)=>{
+        console.log(err.message);
+      });
+    }
+    //console.log(allListings);
   }
 }
 
@@ -72,7 +85,7 @@ async function scrapeSubdomains(subdomains){
 
     for (const subdomain of subdomainKeys) {
 
-      const listingPage = 'https://' + subdomains[subdomain] + '.appfolio.com/listings/';
+      const listingPage = subdomains[subdomain] + '/listings/';
       await page.goto(listingPage);
 
       listings[subdomains[subdomain]] = await page.evaluate((subdomains, subdomain) => {
@@ -85,13 +98,14 @@ async function scrapeSubdomains(subdomains){
           for (let i = 0; i < urls.length; i++) {
             const key = 'listing'  + i;
             let url = urls[i].match(/href="(.*?)"/i)[1];
-            urlObject[key] = 'https://' +  subdomains[subdomain] + '.appfolio.com' + url;
+            urlObject[key] = subdomains[subdomain] + url;
           }
         }
 
         return urlObject;
 
       }, subdomains, subdomain);
+      
     } // end for
 
     return listings;
@@ -104,13 +118,12 @@ async function scrapeSubdomains(subdomains){
 }
 
 /**
- * Search each listing url for the keyphrase, if there is a match, extract key data
+ * Extract listing data to put in database
  *
- * @param {string} search - user search string
  * @param {Object} listingUrls - urls scraped from the listing pages
  */
 
-async function searchListings(search, listingUrls) {
+async function scrapeListings(listingUrls) {
 
   const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
   const page = await browser.newPage();
@@ -128,46 +141,37 @@ async function searchListings(search, listingUrls) {
 
       await page.goto(allListingUrls[listing]);
 
-      let results = await page.evaluate((search) => {
+      listingObject[listing] = await page.evaluate((allListingUrls, listing) => {
+
+        const listingProperty = new Object();
+
+        listingProperty['url'] = allListingUrls[listing];
+        listingProperty['img'] = document.querySelector('.swipebox.gallery__large-image-link').outerHTML.match(/href="(.*?)"/i)[1];
+        listingProperty['address'] = document.querySelector('h1').textContent;
+        listingProperty['rent'] = document.querySelector('.sidebar__price').textContent;
+        listingProperty['size'] = document.querySelector('.sidebar__beds-baths').textContent;
+        listingProperty['contact'] = document.querySelector('.u-pad-bl').textContent;
+        listingProperty['text'] = document.querySelector('.listing-detail__body').textContent;
+        listingProperty
+
+        const propertyKeys = Object.keys(listingProperty);
+
+        for (const property of propertyKeys) {
+          // remove HTML whitespace and unnecessary phrases
+          listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
+          listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
+          listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
+          listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
+          listingProperty[property] = listingProperty[property].trim();
+        }
+
+        listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');
+
+        return listingProperty;
         
-        const html = document.all[0].outerHTML;
-        const matches = html.match(new RegExp(search, 'gi'));
+      }, allListingUrls, listing);
 
-        if (matches) return true;
-        if (!matches) return false;
-
-      }, search);
-
-      if (results) {
-
-        listingObject[listing] = await page.evaluate((allListingUrls, listing) => {
-
-          const listingProperty = new Object();
-
-          listingProperty['URL'] = allListingUrls[listing];
-          listingProperty['Address'] = document.querySelector('h1').textContent;
-          listingProperty['Rent'] = document.querySelector('.sidebar__price').textContent;
-          listingProperty['Size'] = document.querySelector('.sidebar__beds-baths').textContent;
-          listingProperty['Contact'] = document.querySelector('.u-pad-bl').textContent;
-
-          const propertyKeys = Object.keys(listingProperty);
-
-          for (const property of propertyKeys) {
-            // remove HTML whitespace and unnecessary phrases
-            listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
-            listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
-            listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
-            listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
-            listingProperty[property] = listingProperty[property].trim();
-          }
-
-          return listingProperty;
-          
-        }, allListingUrls, listing);
-
-      } // end if
-
-      console.log(Math.floor((loopCount / total) * 100) + '% complete (Checked listing ' + loopCount + '/' + total + ')');
+      console.log(Math.floor((loopCount / total) * 100) + '% complete (' + loopCount + '/' + total + ')');
       loopCount++;
 
     } // end for
@@ -212,3 +216,5 @@ function flattenObject(obj) {
   return toReturn;
 
 }
+
+module.exports = getListings;

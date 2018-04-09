@@ -1,35 +1,38 @@
 extends layout
 
 block content
-  div(class='grid-x grid-padding-x align-center')
-    div(class='small-8 cell') 
-      form(
-        action='/'
-        method='post'
-        id='appfolio-search'
-        class='form login-system'
-        autocomplete='off'
-      )
-        div(class='form-item search')
-          label Search
-          input(
+  .grid-y.grid-frame.align-center
+    .grid-x.grid-padding-x.grid-margin-y.align-center
+      .small-8.medium-6.large-5.cell
+        img(src='/images/appfolio-logo.png')
+      .medium-10.large-8.cell
+        form#search.input-group(
+          action='/'
+          method='post'
+          autocomplete='off'
+        )
+          input.input-group-field(
             name='search'
-            class='form-input'
             type='text'
-            placeholder='section 8'
+            placeholder='Search ...'
           )
-        div(class='form-item subdomains')
-          label Subdomains
-          input(
-            name='subdomains'
-            class='form-input'
-            type='text'
-            placeholder='solarentals, rayrobertsrealty, ...'
-          )
-        div(class='form-item submit')
-          button(
-            id='submit-btn'
-            class='button'
+          button.button.input-group-button(
             type='submit'
           ) Search
-
+      .medium-10.large-8.cell
+        form#subdomains.grid-x.grid-padding-x(
+          action='add-subdomain'
+          method='post'
+          autocomplete='off'
+        )
+          .medium-6.cell
+            label Subdomains being tracked
+              .input-group
+                input.input-group-field(
+                  name='subdomains'
+                  type='text'
+                  placeholder='https://solrentals.appfiolio.com'
+                )
+                button.button.input-group-button(
+                  type='submit'
+                ) Search

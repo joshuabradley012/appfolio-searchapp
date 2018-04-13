@@ -24,7 +24,7 @@ const Listing = require('../models/listing.js');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-//getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
+// getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
 
@@ -153,7 +153,7 @@ async function scrapeListings(listingUrls) {
         let info = document.querySelector('.listing-detail__body');
 
         if (image) {
-          listingProperty['img'] = image.outerHTML.match(/href="(.*?)"/i)[1].replace('large', 'small');
+          listingProperty['img'] = image.outerHTML.match(/href="(.*?)"/i)[1].replace('large', 'medium');
         }
         else {
           listingProperty['img'] = 'https://assets.cdn.appfolio.com/listings/assets/listings/rental_listing/no_photo-ea9e892a45f62e048771a4b22081d1eed003a21f0658a92aa5abcfd357dd4699.png';

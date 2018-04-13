@@ -1,33 +1,15 @@
 # AppFolio Listing Search Tool
 
-## Installation (Mac)
-
-Download the ZIP file and unzip it on your desktop or install GitHub and clone the repo:
-
-    git clone git@github.com:joshuabradley012/appfolio-searchapp.git
-
-Node is required, [install node](https://nodejs.org/):
-
-    brew install node
-
-Ensure node is installed by checking the version:
-
-    node -v
-    npm -v
-    
-Install the dependencies:
-
-    cd ~/appfolio-searchapp
-    npm install
-
 ## Usage
 
-You can search through multiple domains in bulk and can customize your search string or search with [regex](http://www.regular-expressions.info/). Keep in mind this is a very rigid search; it searches for your input exactly (case insensitive), eg 'section' vs 'sections' will return different results but 'section' vs 'Section' will return the same.
+Using this tool, you can schedule appfolio domains to be scraped and available for search.
 
-Start the app:
+It is availbale on this URL: [https://appfoliosearch.herokuapp.com/](https://appfoliosearch.herokuapp.com/)
 
-    npm start
-    
-Run a debugger during development:
+You can add subdomains to be scraped using the form in the sidebar. Keep in mind, listings from those URLs will not be immediately availble. To keep things ethical and efficient, listings are crawled at 1:00am every day. So, subdomains you add today will be searchable tomorrow.
 
-    DEBUG=appfolio-searchapp:* & npm run devstart
+When adding subdomains, they must be an appfolio subdomain. You can either add the full URL such as `https://solarentals.appfolio.com` or simply the subdomain `solarentals`.
+
+When searching, your query will act as an OR statement. So searching `section 8` searches for listings that match `section` OR `8`. To refine this to a phrase match, use quote such as `"section 8"`.
+
+To sort search results, you must click search again to see changes.

@@ -20,7 +20,7 @@
     "http": "0.0.0",
     "http-errors": "~1.6.2",
     "json2csv": "^4.0.2",
-    "mongod": "^5.8.0",
+    "mongod": "^2.0.0",
     "mongoose": "^5.0.12",
     "morgan": "^1.9.0",
     "nodeman": "^1.1.2",

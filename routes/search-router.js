@@ -1,15 +1,30 @@
 var express = require('express');
 var router = express.Router();
 var searchListings = require('../middleware/search-listings');
+var addSubdomain = require('../middleware/add-subdomain');
+var removeSubdomain = require('../middleware/remove-subdomain');
+var getSubdomains = require('../middleware/get-subdomains');
 
 router.get('/', function(req, res, next) {
-  res.render('search');
+  getSubdomains((currentSubdomains) => {
+    res.render('search', { subdomains: currentSubdomains });
+  });
 });
 
 router.post('/', function(req, res, next) {
-  searchListings({ search: req.body.search }, (callback) => {
-  		res.render('listings', {listings: callback, search: req.body.search});
+  getSubdomains((currentSubdomains) => {
+    searchListings({ search: req.body.search }, (results) => {
+      res.render('search', { listings: results, search: req.body.search, subdomains: currentSubdomains });
+    });
   });
+});
+
+router.post('/remove-subdomain', function(req, res) {
+  removeSubdomain({ url: req.body.url }, (callback) => {});
+});
+
+router.post('/add-subdomain', function(req, res) {
+  addSubdomain({ subdomain: { url: req.body.subdomain } }, (callback) => {});
 });
 
 module.exports = router;

@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/listings');
 var Schema = mongoose.Schema;
 
 var listingSchema = new Schema({
-  url: {type: String, unique: false, index: true},
+  url: {type: String, unique: true, index: true},
   img: {type: String, unique: false, index: true},
   address: {type: String, unique: false, index: true},
   rent: {type: Number, unique: false, index: true},

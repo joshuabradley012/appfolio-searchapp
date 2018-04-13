@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var CronJob = require('cron').CronJob;
+var getSubdomains = require('./middleware/get-subdomains');
+var scrapeSubdomains = require('./middleware/scrape-appfolio');
 
 var app = express();
 
@@ -15,6 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// cron job
+var job = new CronJob('* 1 * * * 1-7', function() {
+	getSubdomains((savedSubdomains) => {
+		scrapeSubdomains({subdomains: savedSubdomains});
+	})
+}, null, true, 'America/Los_Angeles');
 
 // routes
 var searchRouter = require('./routes/search-router');

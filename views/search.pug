@@ -1,38 +1,70 @@
 extends layout
 
 block content
-  .grid-y.grid-frame.align-center
-    .grid-x.grid-padding-x.grid-margin-y.align-center
-      .small-8.medium-6.large-5.cell
-        img(src='/images/appfolio-logo.png')
-      .medium-10.large-8.cell
-        form#search.input-group(
+  main.grid-x
+    
+    aside.show-for-large
+      .sidebar.grid-y
+        form#add-subdomain.grid-x.grid-padding-x(
           action='/'
           method='post'
           autocomplete='off'
         )
-          input.input-group-field(
-            name='search'
-            type='text'
-            placeholder='Search ...'
+          .input-group
+            input.input-group-field(
+              name='subdomain'
+              type='text'
+              placeholder='Add subdomain'
+            )
+            button.button.input-group-button(
+              type='submit'
+              id='addSubdomain'
+            ) +
+        if (subdomains)
+          ul.tracked-subdomains.unstyled
+            each subdomain in subdomains
+              li.subdomain.callout(data-closable)
+                span= subdomain.url
+                button(data-close, data=subdomain.url).close-button x
+    
+    article.cell.auto
+      section.search-group.grid-x.grid-padding-y
+        .cell.auto
+          h1 Search listings...
+          form#search.input-group(
+            action='/'
+            method='post'
+            autocomplete='off'
           )
-          button.button.input-group-button(
-            type='submit'
-          ) Search
-      .medium-10.large-8.cell
-        form#subdomains.grid-x.grid-padding-x(
-          action='add-subdomain'
-          method='post'
-          autocomplete='off'
-        )
-          .medium-6.cell
-            label Subdomains being tracked
-              .input-group
-                input.input-group-field(
-                  name='subdomains'
-                  type='text'
-                  placeholder='https://solrentals.appfiolio.com'
-                )
-                button.button.input-group-button(
-                  type='submit'
-                ) Search
+            input.input-group-field(
+              name='search'
+              type='text'
+              placeholder=''
+            )
+            button.button.input-group-button(
+              type='submit'
+              id='submitSearch'
+            ) Search
+      section.results
+        if (listings)
+          if (listings.length > 0)
+            ul.listings.unstyled
+              each listing in listings
+                li
+                  a(href=listing.url).listing.grid-x
+                    .img-container.cell.small-12.medium-3
+                      img(src=listing.img)
+                    .info.cell.auto
+                      h3= listing.address
+                      span.rent= listing.rent
+                      span.size= listing.size
+                      - search = search.replace(/"/gi, '');
+                      - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
+                      if (preview !== null)
+                        - var previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+                        p ... !{previewText} ...
+                      else
+                        p No preview available.
+          else if (listings.length === 0)
+            h2 No results found for: #{search}  
+        

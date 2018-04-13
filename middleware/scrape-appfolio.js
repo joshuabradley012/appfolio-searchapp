@@ -7,6 +7,8 @@
  * @requires puppeteer
  */
 
+module.exports = getListings;
+
 /**
  * Dependencies
  */
@@ -22,23 +24,18 @@ const Listing = require('../models/listing.js');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-const options = new Object();
-options.subdomains = ['https://rohcs.appfolio.com', 'https://solarentals.appfolio.com'];
-
-getListings(options);
-
 async function getListings(options) {
 
   const subdomains = new Object();
-  let inputSubdomains = options.subdomains.toString();
+  let inputSubdomains = options.subdomains
 
-  inputSubdomains = inputSubdomains.replace(/\s*,\s*/, ',');
-  inputSubdomains = inputSubdomains.split(',');
+  console.log(inputSubdomains);
 
-  for (let i = 0; i < inputSubdomains.length; i++) {
-    const subdomain = inputSubdomains[i];
+  let i = 0;
+  for (var inputKey in inputSubdomains) {
     const key = 'subdomain' + i;
-    subdomains[key] = subdomain;
+    subdomains[key] = inputSubdomains[inputKey].url;
+    i++;
   }
 
   const listingUrls = await scrapeSubdomains(subdomains);
@@ -62,7 +59,6 @@ async function getListings(options) {
         console.log(err.message);
       });
     }
-    //console.log(allListings);
   }
 }
 
@@ -146,23 +142,39 @@ async function scrapeListings(listingUrls) {
         const listingProperty = new Object();
 
         listingProperty['url'] = allListingUrls[listing];
-        listingProperty['img'] = document.querySelector('.swipebox.gallery__large-image-link').outerHTML.match(/href="(.*?)"/i)[1];
-        listingProperty['address'] = document.querySelector('h1').textContent;
-        listingProperty['rent'] = document.querySelector('.sidebar__price').textContent;
-        listingProperty['size'] = document.querySelector('.sidebar__beds-baths').textContent;
-        listingProperty['contact'] = document.querySelector('.u-pad-bl').textContent;
-        listingProperty['text'] = document.querySelector('.listing-detail__body').textContent;
-        listingProperty
+
+        let image = document.querySelector('.gallery__large-image-link');
+        let h1 = document.querySelector('h1');
+        let rent = document.querySelector('.sidebar__price');
+        let size = document.querySelector('.sidebar__beds-baths');
+        let contact = document.querySelector('.u-pad-bl');
+        let info = document.querySelector('.listing-detail__body');
+
+        if (image) {
+          listingProperty['img'] = image.outerHTML.match(/href="(.*?)"/i)[1].replace('large', 'small');
+        }
+        else {
+          listingProperty['img'] = 'https://assets.cdn.appfolio.com/listings/assets/listings/rental_listing/no_photo-ea9e892a45f62e048771a4b22081d1eed003a21f0658a92aa5abcfd357dd4699.png';
+        }
+
+        if (h1) listingProperty['address'] = h1.textContent;
+        if (rent) listingProperty['rent'] = rent.textContent;
+        if (size) listingProperty['size'] = size.textContent;
+        if (contact) listingProperty['contact'] = contact.textContent;
+        if (info) listingProperty['text'] = info.textContent;
 
         const propertyKeys = Object.keys(listingProperty);
 
         for (const property of propertyKeys) {
-          // remove HTML whitespace and unnecessary phrases
-          listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
-          listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
-          listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
-          listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
-          listingProperty[property] = listingProperty[property].trim();
+
+          if (listingProperty[property] !== null && typeof(listingProperty[property]) !== 'undefined' && listingProperty[property] !== '') {
+            // remove HTML whitespace and unnecessary phrases
+            listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
+            listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
+            listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
+            listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
+            listingProperty[property] = listingProperty[property].trim();
+          }
         }
 
         listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');
@@ -216,5 +228,3 @@ function flattenObject(obj) {
   return toReturn;
 
 }
-
-module.exports = getListings;

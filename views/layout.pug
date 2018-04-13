@@ -1,12 +1,13 @@
 doctype html
-html
+html(lang='en')
   head
-    title= title
+    title Appfolio Search Tool
     link(rel='stylesheet', href='/stylesheets/style.css')
     script
-     include gtm-head.js
+      include gtm-head.js
   body
     noscript
       include gtm-noscript.js
     block content
-    script(src='/javascripts/script.js')
+    script(src='/javascripts/jquery.js')
+    script(src='/javascripts/scripts.js')

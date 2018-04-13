@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/listings');
+mongoose.connect(process.env.MONGODB_URI);
 
 var Schema = mongoose.Schema;
 

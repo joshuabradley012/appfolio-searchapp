@@ -3,7 +3,7 @@ extends layout
 block content
   main.grid-x
     
-    aside.show-for-medium
+    aside.show-for-large
       .sidebar.grid-y
         form#add-subdomain.grid-x.grid-padding-x(
           action='/'
@@ -47,7 +47,7 @@ block content
                 id='submitSearch'
               ) Search
             fieldset
-            
+
               - var relevanceSorted = true
               - var rentSorted = false
               if (sort)

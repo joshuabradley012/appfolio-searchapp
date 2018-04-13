@@ -3,7 +3,7 @@ extends layout
 block content
   main.grid-x
     
-    aside.show-for-large
+    aside.show-for-medium
       .sidebar.grid-y
         form#add-subdomain.grid-x.grid-padding-x(
           action='/'
@@ -26,25 +26,55 @@ block content
               li.subdomain.callout(data-closable)
                 span= subdomain.url
                 button(data-close, data=subdomain.url).close-button x
-    
+
     article.cell.auto
       section.search-group.grid-x.grid-padding-y
         .cell.auto
           h1 Search listings...
-          form#search.input-group(
+          form#search(
             action='/'
             method='post'
             autocomplete='off'
           )
-            input.input-group-field(
-              name='search'
-              type='text'
-              placeholder=''
-            )
-            button.button.input-group-button(
-              type='submit'
-              id='submitSearch'
-            ) Search
+            .input-group
+              input.input-group-field(
+                name='search'
+                type='text'
+                placeholder=''
+              )
+              button.button.input-group-button(
+                type='submit'
+                id='submitSearch'
+              ) Search
+            fieldset
+            
+              - var relevanceSorted = true
+              - var rentSorted = false
+              if (sort)
+                if (sort == 'relevance')
+                  - var relevanceSorted = true
+                  - var rentSorted = false
+                else if (sort == 'rent')
+                  - var rentSorted = true
+                  - var relevanceSorted = false
+
+              label.sort-label Sort by:
+              input(
+                type='radio'
+                name='sort'
+                value='relevance'
+                id='sortRelevance'
+                checked= relevanceSorted
+              )
+              label(for='sortRelevance') Relevance
+              input(
+                type='radio'
+                name='sort'
+                value='rent'
+                id='sortRent'
+                checked= rentSorted
+              )
+              label(for='sortRent') Rent
       section.results
         if (listings)
           if (listings.length > 0)
@@ -56,7 +86,7 @@ block content
                       img(src=listing.img)
                     .info.cell.auto
                       h3= listing.address
-                      span.rent= listing.rent
+                      strong.rent= listing.rent
                       span.size= listing.size
                       - search = search.replace(/"/gi, '');
                       - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));

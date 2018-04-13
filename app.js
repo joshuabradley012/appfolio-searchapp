@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // cron job
-var job = new CronJob('* 1 * * * 1-7', function() {
+var job = new CronJob('00 00 1 * * 1-7', function() {
 	getSubdomains((savedSubdomains) => {
 		scrapeSubdomains({subdomains: savedSubdomains});
 	})

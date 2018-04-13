@@ -72,6 +72,11 @@ aside {
 	max-width: 700px;
 }
 
+.sort-label {
+	display: inline-block;
+	margin-right: 1rem;
+}
+
 .results {
 	padding: 0 1rem;
 }
@@ -125,7 +130,8 @@ aside {
 	padding: 1rem;
 }
 
-.listing span {
+.listing .size,
+.listing .rent {
 	color: green;
 	margin-right: 1rem;
 }

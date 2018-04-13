@@ -13,8 +13,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   getSubdomains((currentSubdomains) => {
-    searchListings({ search: req.body.search }, (results) => {
-      res.render('search', { listings: results, search: req.body.search, subdomains: currentSubdomains });
+    searchListings({ search: req.body.search, sort: req.body.sort }, (results) => {
+      res.render('search', { listings: results, search: req.body.search, subdomains: currentSubdomains, sort: req.body.sort });
     });
   });
 });

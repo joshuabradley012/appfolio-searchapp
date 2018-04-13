@@ -36,16 +36,22 @@ block content
             method='post'
             autocomplete='off'
           )
+
+            -var previousSearch = ''
+            if (search)
+              - var previousSearch = search
+              
             .input-group
               input.input-group-field(
                 name='search'
                 type='text'
-                placeholder=''
+                value= previousSearch
               )
               button.button.input-group-button(
                 type='submit'
                 id='submitSearch'
               ) Search
+
             fieldset
 
               - var relevanceSorted = true

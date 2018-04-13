@@ -15,7 +15,15 @@ module.exports = getListings;
 
 const puppeteer = require('puppeteer');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/listings');
+
+if (process.env.MONGODB_URI) {
+  connection = process.env.MONGODB_URI;
+} else {
+  connection = 'mongodb://localhost/listings'
+}
+
+mongoose.connect(connection);
+
 const Listing = require('../models/listing.js');
 
 /**
@@ -24,7 +32,7 @@ const Listing = require('../models/listing.js');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-// getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
+getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
 
@@ -163,7 +171,7 @@ async function scrapeListings(listingUrls) {
         if (rent) listingProperty['rent'] = rent.textContent;
         if (size) listingProperty['size'] = size.textContent;
         if (contact) listingProperty['contact'] = contact.textContent;
-        if (info) listingProperty['text'] = info.textContent;
+        if (info) listingProperty['listingText'] = info.textContent;
 
         const propertyKeys = Object.keys(listingProperty);
 

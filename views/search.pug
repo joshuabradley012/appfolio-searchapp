@@ -118,10 +118,10 @@ block content
               each listing in listings
 
                 li.small-12.medium-6.cell
-                  a(href=listing.url).listing.grid-y
+                  a(href=listing.url).listing.grid-x
                     figure.img-container.cell.small-12
                       img(src=listing.img)
-                    .info.cell.auto
+                    .info.cell.auto.align-self-top
                       h3= listing.address
                       strong.rent= listing.rent
                       span.size= listing.size

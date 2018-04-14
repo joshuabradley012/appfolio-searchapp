@@ -136,8 +136,8 @@ ul.unstyled {
 }
 
 .listing .img-container {
+	max-height: 150px;
   overflow: hidden;
-  max-height: 150px;
   border-radius: 4px 4px 0 0;
 }
 

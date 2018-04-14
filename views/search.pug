@@ -126,11 +126,14 @@ block content
                       strong.rent= listing.rent
                       span.size= listing.size
 
-                      if (search)
-                        - search = search.replace(/"/gi, '');
-                      - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
-                      if (preview !== null)
-                        - var previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+                      - var previewText = listing.text.match(/(\S+\s+){0,20}/gi)[0];
+
+                      if (previewText)
+                        if (search)
+                          - search = search.replace(/"/gi, '');
+                          - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
+                          if (preview)
+                            - previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
 
                         p !{previewText}...
 

@@ -21,10 +21,10 @@ if (process.env.MONGODB_URI) {
 } else {
   connection = 'mongodb://localhost/listings'
 }
-
 mongoose.connect(connection);
 
 const Listing = require('../models/listing.js');
+Listing.remove().exec();
 
 /**
  * Collect data from listings and return a simple object
@@ -32,7 +32,7 @@ const Listing = require('../models/listing.js');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
+//getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
 
@@ -58,10 +58,6 @@ async function getListings(options) {
 
   if (Object.keys(allListings).length > 0) {
     console.log('Scrape complete.');
-
-    mongoose.connection.db.dropCollection('listings', function(err) {
-      if (err) console.log(err);
-    });
 
     let listingKeys = Object.keys(allListings);
     for (const listing of listingKeys) {
@@ -171,7 +167,7 @@ async function scrapeListings(listingUrls) {
         if (rent) listingProperty['rent'] = rent.textContent;
         if (size) listingProperty['size'] = size.textContent;
         if (contact) listingProperty['contact'] = contact.textContent;
-        if (info) listingProperty['listingText'] = info.textContent;
+        if (info) listingProperty['text'] = info.textContent;
 
         const propertyKeys = Object.keys(listingProperty);
 

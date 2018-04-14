@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
 if (process.env.MONGODB_URI) {
-	connection = process.env.MONGODB_URI;
+	dbUrl = process.env.MONGODB_URI;
 } else {
-	connection = 'mongodb://localhost/listings'
+	dbUrl = 'mongodb://localhost/listings'
 }
+mongoose.connect(connection);
 
 var Schema = mongoose.Schema;
 

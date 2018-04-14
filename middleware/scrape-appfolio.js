@@ -34,6 +34,7 @@ const Listing = require('../models/listing.js');
 //getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
+  
   Listing.remove().exec();
 
   const subdomains = new Object();

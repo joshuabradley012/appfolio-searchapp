@@ -131,8 +131,8 @@ block content
                       if (previewText)
                         if (search)
                           - search = search.replace(/"/gi, '');
-                          - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
-                          if (preview)
+                          - var snippet = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
+                          if (snippet)
                             - previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
 
                         p !{previewText}...

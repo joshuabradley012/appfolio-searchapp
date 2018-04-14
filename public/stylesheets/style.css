@@ -34,13 +34,17 @@ ul.unstyled {
   list-style: none;
 }
 
-aside {
+input[type='radio']:hover {
+  cursor: pointer;
+}
+
+.sidebar {
   width: 300px;
   box-shadow: 0px 1px 7px 0px rgba(0,0,0,.3);
   background: #fff;
 }
 
-.sidebar {
+.sidebar .inner {
   padding: 1rem 1rem;
   min-height: 100vh;
   height: 100%;
@@ -123,7 +127,7 @@ aside {
   border-radius: 3px;
   box-shadow: 0px 2px 25px -1px rgba(0,0,0,.15);
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .listing:hover::after {

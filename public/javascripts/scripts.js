@@ -31,6 +31,7 @@ jQuery(document).ready(function($){
 
     } else if (!isURL(inputValue)) {
 
+      $(this).find('input').val('');
       inputValue = 'https://' + inputValue.replace(' ', '') + '.appfolio.com'
       var html = '<p class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></p>'
       $('.tracked-subdomains').append(html);

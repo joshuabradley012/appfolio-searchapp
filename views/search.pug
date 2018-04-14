@@ -5,6 +5,7 @@ block content
     
     aside.show-for-large
       section.sidebar.grid-y
+
         form#add-subdomain.grid-x.grid-padding-x(
           action='/'
           method='post'
@@ -20,18 +21,24 @@ block content
               type='submit'
               id='addSubdomain'
             ) Add
+
         a.refresh.text-right(
           id='refreshDatabase'
         ) Refresh database
+
         if (subdomains)
+
           ul.tracked-subdomains.unstyled
+
             each subdomain in subdomains
+
               li.subdomain.callout(data-closable)
                 span= subdomain.url
                 button(data-close, data=subdomain.url).close-button x
 
     article.cell.auto
       section.search-group.grid-x.grid-padding-y.grid-padding-x
+
         .cell.auto
           h1 Search listings...
           form#search(
@@ -101,11 +108,15 @@ block content
               label(for='sortMost') Most expensive
 
       section.results
+
         if (listings)
           if (listings.length > 0)
+
             p.count !{listings.length} results
             ul.listings.unstyled.grid-x.grid-padding-x.grid-padding-y
+
               each listing in listings
+
                 li.small-12.medium-6.cell
                   a(href=listing.url).listing.grid-x
                     .img-container.cell.small-12
@@ -114,13 +125,19 @@ block content
                       h3= listing.address
                       strong.rent= listing.rent
                       span.size= listing.size
+
                       - search = search.replace(/"/gi, '');
                       - var preview = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
                       if (preview !== null)
                         - var previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+
                         p ... !{previewText} ...
+
                       else
+
                         p No preview available.
+
           else if (listings.length === 0)
+          
             h2 No results found for: #{search}  
         

@@ -113,13 +113,13 @@ block content
           if (listings.length > 0)
 
             p.count !{listings.length} results
-            ul.listings.unstyled.grid-x.grid-padding-x.grid-padding-y
+            ul.listings.unstyled.grid-x.grid-padding-x.grid-padding-y.grid-margin-y
 
               each listing in listings
 
                 li.small-12.medium-6.cell
                   a(href=listing.url).listing.grid-x
-                    .img-container.cell.small-12
+                    figure.img-container.cell.small-12
                       img(src=listing.img)
                     .info.cell.auto
                       h3= listing.address

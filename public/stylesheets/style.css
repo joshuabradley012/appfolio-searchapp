@@ -29,6 +29,10 @@ p {
   line-height: 1.35;
 }
 
+[type=radio] {
+	margin-bottom: 0 !important;
+}
+
 ul.unstyled {
   margin: 0;
   list-style: none;
@@ -101,7 +105,7 @@ ul.unstyled {
 }
 
 .results {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .count {
@@ -197,7 +201,7 @@ ul.unstyled {
     padding: 0 5rem;
   }
   .results {
-    padding: 2rem 5rem;
+    padding: 1rem 5rem;
   }
 }
 
@@ -206,6 +210,6 @@ ul.unstyled {
     padding: 0 7rem;
   }
   .results {
-    padding: 2rem 7rem;
+    padding: 1rem 7rem;
   }  
 }

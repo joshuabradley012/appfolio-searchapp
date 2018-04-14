@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 if (process.env.MONGODB_URI) {
-	dbUrl = process.env.MONGODB_URI;
+  dbUrl = process.env.MONGODB_URI;
 } else {
-	dbUrl = 'mongodb://localhost/listings'
+  dbUrl = 'mongodb://localhost/listings'
 }
 mongoose.connect(dbUrl);
 

@@ -5,7 +5,7 @@ if (process.env.MONGODB_URI) {
 } else {
 	dbUrl = 'mongodb://localhost/listings'
 }
-mongoose.connect(connection);
+mongoose.connect(dbUrl);
 
 var Schema = mongoose.Schema;
 

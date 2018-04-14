@@ -23,19 +23,37 @@ jQuery(document).ready(function($){
 
     var inputValue = $(this).find('input').val();
 
-    if (!isURL(inputValue)) {
+    if (!inputValue.match(/appfolio.com$/gi) && isURL(inputValue)) {
+
+      inputValue = 'Invalid url';
+      var html = '<p class="alert callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></p>'
+      $('.tracked-subdomains').prepend(html);
+
+    } else if (!isURL(inputValue)) {
+
       inputValue = 'https://' + inputValue.replace(' ', '') + '.appfolio.com'
+      var html = '<p class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></p>'
+      $('.tracked-subdomains').append(html);
+
+      $.ajax({
+        type: 'POST',
+        url: '/add-subdomain',
+        data: {subdomain: inputValue}
+      });
+
+    } else {
+
+      $(this).find('input').val('');
+      var html = '<li class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></li>'
+      $('.tracked-subdomains').append(html); 
+
+      $.ajax({
+        type: 'POST',
+        url: '/add-subdomain',
+        data: {subdomain: inputValue}
+      });
     }
 
-    $(this).find('input').val('');
-    var html = '<li class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></li>'
-    $('.tracked-subdomains').append(html);
-
-    $.ajax({
-      type: 'POST',
-      url: '/add-subdomain',
-      data: {subdomain: inputValue}
-    });
   });
 
 })

@@ -62,17 +62,17 @@ block content
               - var mostSorted = false
               if (sort)
                 if (sort == 'relevance')
-                  - var relevanceSorted = true
-                  - var leastSorted = false
-                  - var mostSorted = false
+                  - relevanceSorted = true
+                  - leastSorted = false
+                  - mostSorted = false
                 else if (sort == 'least')
-                  - var relevanceSorted = false
-                  - var leastSorted = true
-                  - var mostSorted = false
+                  - relevanceSorted = false
+                  - leastSorted = true
+                  - mostSorted = false
                 else if (sort == 'most')
-                  - var relevanceSorted = false
-                  - var leastSorted = false
-                  - var mostSorted = true
+                  - relevanceSorted = false
+                  - leastSorted = false
+                  - mostSorted = true
 
               label.sort-label Sort by:
               input(

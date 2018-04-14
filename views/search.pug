@@ -82,30 +82,33 @@ block content
                   - mostSorted = true
 
               label.sort-label Sort by:
-              input(
-                type='radio'
-                name='sort'
-                value='relevance'
-                id='sortRelevance'
-                checked= relevanceSorted
-              )
-              label(for='sortRelevance') Relevance
-              input(
-                type='radio'
-                name='sort'
-                value='least'
-                id='sortLeast'
-                checked= leastSorted
-              )
-              label(for='sortLeast') Least expensive
-              input(
-                type='radio'
-                name='sort'
-                value='most'
-                id='sortMost'
-                checked= mostSorted
-              )
-              label(for='sortMost') Most expensive
+              span.display-inline-block
+                input(
+                  type='radio'
+                  name='sort'
+                  value='relevance'
+                  id='sortRelevance'
+                  checked= relevanceSorted
+                )
+                label(for='sortRelevance') Relevance
+              span.display-inline-block
+                input(
+                  type='radio'
+                  name='sort'
+                  value='least'
+                  id='sortLeast'
+                  checked= leastSorted
+                )
+                label(for='sortLeast') Least expensive
+              span.display-inline-block  
+                input(
+                  type='radio'
+                  name='sort'
+                  value='most'
+                  id='sortMost'
+                  checked= mostSorted
+                )
+                label(for='sortMost') Most expensive
 
       section.results
 

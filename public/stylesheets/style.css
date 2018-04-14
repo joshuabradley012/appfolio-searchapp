@@ -98,9 +98,9 @@ ul.unstyled {
   justify-content: center;
 }
 
-.listings .cell {
+.listings > .cell {
   max-width: 300px;
-  margin-bottom: 1rem;
+  margin-bottom: .9375rem;
 }
 
 .listing {

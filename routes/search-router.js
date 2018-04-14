@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var scrapeAppfolio = require('../middleware/scrape-appfolio');
-var searchListings = require('../middleware/search-listings');
-var addSubdomain = require('../middleware/add-subdomain');
-var removeSubdomain = require('../middleware/remove-subdomain');
-var getSubdomains = require('../middleware/get-subdomains');
+var searchListings = require('../helpers/search-listings');
+var addSubdomain = require('../helpers/add-subdomain');
+var removeSubdomain = require('../helpers/remove-subdomain');
+var getSubdomains = require('../helpers/get-subdomains');
 
 router.get('/', function(req, res, next) {
   getSubdomains((currentSubdomains) => {

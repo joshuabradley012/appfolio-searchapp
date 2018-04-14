@@ -1,1 +1,0 @@
-db.listings.find().sort({_id:1}).forEach(function(doc){db.listings.remove({_id:{$gt:doc._id}});})

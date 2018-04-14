@@ -31,7 +31,7 @@ block content
                 button(data-close, data=subdomain.url).close-button x
 
     article.cell.auto
-      section.search-group.grid-x.grid-padding-y
+      section.search-group.grid-x.grid-padding-y.grid-padding-x
         .cell.auto
           h1 Search listings...
           form#search(
@@ -103,11 +103,12 @@ block content
       section.results
         if (listings)
           if (listings.length > 0)
-            ul.listings.unstyled
+            p.count !{listings.length} results
+            ul.listings.unstyled.grid-x.grid-padding-x.grid-padding-y
               each listing in listings
-                li
+                li.small-12.medium-6.cell
                   a(href=listing.url).listing.grid-x
-                    .img-container.cell.small-12.medium-3
+                    .img-container.cell.small-12
                       img(src=listing.img)
                     .info.cell.auto
                       h3= listing.address

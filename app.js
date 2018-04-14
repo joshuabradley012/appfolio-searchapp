@@ -21,9 +21,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // cron job
 var job = new CronJob('00 00 1 * * 1-7', function() {
-	getSubdomains((savedSubdomains) => {
-		scrapeSubdomains({subdomains: savedSubdomains});
-	});
+  getSubdomains((savedSubdomains) => {
+    scrapeSubdomains({subdomains: savedSubdomains});
+  });
 }, null, true, 'America/Los_Angeles');
 
 // routes

@@ -43,13 +43,17 @@ aside {
 }
 
 #add-subdomain .input-group {
-  margin-bottom: .5rem;
+  margin-bottom: .25rem;
+}
+
+.refresh {
+	font-size: .8rem;
 }
 
 .subdomain {
   border-radius: 1em;
   padding: .25em 1em;
-  margin-bottom: 1rem;  
+  margin: 1rem 0;
   overflow: hidden;
   font-size: .85rem;
   background: #eee;

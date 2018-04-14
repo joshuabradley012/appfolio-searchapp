@@ -3,8 +3,10 @@ const Listing = require('../models/listing.js');
 async function findListings(options, callback) {
   try {
 
-    if (options.sort == 'rent') {
+    if (options.sort == 'least') {
       var sortBy = {rent: 1};
+    } else if (options.sort == 'most') {
+      var sortBy = {rent: -1};
     } else if (options.sort == 'relevance') {
       var sortBy = {score: { $meta: 'textScore' } };
     }

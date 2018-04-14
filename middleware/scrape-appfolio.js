@@ -32,7 +32,7 @@ Listing.remove().exec();
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-// getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
+getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
 

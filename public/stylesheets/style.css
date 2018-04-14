@@ -42,6 +42,18 @@ aside {
   height: 100%;
 }
 
+#add-subdomain .input-group {
+  margin-bottom: .5rem;
+}
+
+.disclaimer {
+  padding: 0 .25rem;
+  font-size: .85rem;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
 .subdomain {
   border-radius: 1em;
   padding: .25em 1em;

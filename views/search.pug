@@ -14,12 +14,13 @@ block content
             input.input-group-field(
               name='subdomain'
               type='text'
-              placeholder='Add subdomain'
+              placeholder='Add website'
             )
             button.button.input-group-button(
               type='submit'
               id='addSubdomain'
             ) +
+          label.disclaimer Add appfolio websites to the database. Note that new listings are gathered every night, so search results for new subdomains won't appear until tomorrow.
         if (subdomains)
           ul.tracked-subdomains.unstyled
             each subdomain in subdomains
@@ -55,14 +56,21 @@ block content
             fieldset
 
               - var relevanceSorted = true
-              - var rentSorted = false
+              - var leastSorted = false
+              - var mostSorted = false
               if (sort)
                 if (sort == 'relevance')
                   - var relevanceSorted = true
-                  - var rentSorted = false
-                else if (sort == 'rent')
-                  - var rentSorted = true
+                  - var leastSorted = false
+                  - var mostSorted = false
+                else if (sort == 'least')
                   - var relevanceSorted = false
+                  - var leastSorted = true
+                  - var mostSorted = false
+                else if (sort == 'most')
+                  - var relevanceSorted = false
+                  - var leastSorted = false
+                  - var mostSorted = true
 
               label.sort-label Sort by:
               input(
@@ -76,11 +84,19 @@ block content
               input(
                 type='radio'
                 name='sort'
-                value='rent'
-                id='sortRent'
-                checked= rentSorted
+                value='least'
+                id='sortLeast'
+                checked= leastSorted
               )
-              label(for='sortRent') Rent
+              label(for='sortLeast') Least expensive
+              input(
+                type='radio'
+                name='sort'
+                value='most'
+                id='sortmost'
+                checked= mostSorted
+              )
+              label(for='sortmost') Most expensive
       section.results
         if (listings)
           if (listings.length > 0)

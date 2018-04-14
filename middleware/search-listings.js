@@ -12,16 +12,31 @@ async function findListings(options, callback) {
     }
 
     const search = options.search;
-    Listing.find({$text: {$search: search}}, {score: { $meta: 'textScore' } }, function(err, res){
-      if (err) {
-        console.log(err);
-        callback(err);
-      }
-      else {
-        console.log(res);
-        callback(res);
-      }
-    }).sort(sortBy);
+
+    if (search && search !== '') {
+      Listing.find({$text: {$search: search}}, {score: { $meta: 'textScore' } }, function(err, res){
+        if (err) {
+          console.log(err);
+          callback(err);
+        }
+        else {
+          console.log(res);
+          callback(res);
+        }
+      }).sort(sortBy);
+    } else {
+      Listing.find({}, {score: { $meta: 'textScore' } }, function(err, res){
+        if (err) {
+          console.log(err);
+          callback(err);
+        }
+        else {
+          console.log(res);
+          callback(res);
+        }
+      }).sort(sortBy);
+    }
+
   } catch(err) {
     return null;
   }

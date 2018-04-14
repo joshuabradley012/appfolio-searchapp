@@ -18,7 +18,7 @@ jQuery(document).ready(function($){
     });
   });
 
-  $('#add-subdomain').on('submit', function(event) {
+  $('#addSubdomain').on('submit', function(event) {
     event.preventDefault();
 
     var inputValue = $(this).find('input').val();

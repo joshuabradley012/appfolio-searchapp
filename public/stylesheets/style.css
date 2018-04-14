@@ -34,10 +34,6 @@ ul.unstyled {
   list-style: none;
 }
 
-input[type='radio']:hover {
-  cursor: pointer;
-}
-
 .sidebar {
   width: 300px;
   box-shadow: 0px 1px 7px 0px rgba(0,0,0,.3);

@@ -1,45 +1,45 @@
 jQuery(document).ready(function($){
 
-	$('.close-button').on('click', function() {
+  $('.close-button').on('click', function() {
 
-		var elementData = $(this).attr('data');
+    var elementData = $(this).attr('data');
     
     $.ajax({
       type: 'POST',
       url: '/remove-subdomain',
       data: {url: elementData}
     });
-	});
+  });
 
-	$('#refreshDatabase').on('click', function() {
+  $('#refreshDatabase').on('click', function() {
 
-		var elementData = $(this).attr('data');
+    var elementData = $(this).attr('data');
     
     $.ajax({
       type: 'POST',
       url: '/scrape'
     });
-	});
+  });
 
-	$('#add-subdomain').on('submit', function(event) {
-		event.preventDefault();
+  $('#add-subdomain').on('submit', function(event) {
+    event.preventDefault();
 
-		var inputValue = $(this).find('input').val();
+    var inputValue = $(this).find('input').val();
 
-		if (!isURL(inputValue)) {
-			inputValue = 'https://' + inputValue.replace(' ', '') + '.appfolio.com'
-		}
+    if (!isURL(inputValue)) {
+      inputValue = 'https://' + inputValue.replace(' ', '') + '.appfolio.com'
+    }
 
-		$(this).find('input').val('');
-		var html = '<li class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></li>'
-		$('.tracked-subdomains').append(html);
+    $(this).find('input').val('');
+    var html = '<li class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></li>'
+    $('.tracked-subdomains').append(html);
 
     $.ajax({
       type: 'POST',
       url: '/add-subdomain',
       data: {subdomain: inputValue}
     });
-	});
+  });
 
 })
 

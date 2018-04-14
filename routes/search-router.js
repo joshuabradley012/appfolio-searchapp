@@ -8,7 +8,9 @@ var getSubdomains = require('../middleware/get-subdomains');
 
 router.get('/', function(req, res, next) {
   getSubdomains((currentSubdomains) => {
-    res.render('search', { subdomains: currentSubdomains });
+    searchListings({ search: ''}, (results) => {
+      res.render('search', { listings: results, search: '', subdomains: currentSubdomains });
+    });
   });
 });
 

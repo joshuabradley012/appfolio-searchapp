@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var CronJob = require('cron').CronJob;
-var getSubdomains = require('./middleware/get-subdomains');
+var getSubdomains = require('./helpers/get-subdomains');
 var scrapeSubdomains = require('./middleware/scrape-appfolio');
 
 var app = express();

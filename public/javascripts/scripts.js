@@ -11,6 +11,16 @@ jQuery(document).ready(function($){
     });
 	});
 
+	$('#refreshDatabase').on('click', function() {
+
+		var elementData = $(this).attr('data');
+    
+    $.ajax({
+      type: 'POST',
+      url: '/scrape'
+    });
+	});
+
 	$('#add-subdomain').on('submit', function(event) {
 		event.preventDefault();
 

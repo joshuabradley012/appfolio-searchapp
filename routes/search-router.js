@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var scrapeAppfolio = require('../middleware/scrape-appfolio');
 var searchListings = require('../middleware/search-listings');
 var addSubdomain = require('../middleware/add-subdomain');
 var removeSubdomain = require('../middleware/remove-subdomain');
@@ -25,6 +26,12 @@ router.post('/remove-subdomain', function(req, res) {
 
 router.post('/add-subdomain', function(req, res) {
   addSubdomain({ subdomain: { url: req.body.subdomain } }, (callback) => {});
+});
+
+router.post('/scrape', function(req, res) {
+  getSubdomains((savedSubdomains) => {
+    scrapeAppfolio({subdomains: savedSubdomains});
+  })
 });
 
 module.exports = router;

@@ -24,7 +24,6 @@ if (process.env.MONGODB_URI) {
 mongoose.connect(connection);
 
 const Listing = require('../models/listing.js');
-Listing.remove().exec();
 
 /**
  * Collect data from listings and return a simple object
@@ -35,6 +34,7 @@ Listing.remove().exec();
 // getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
+  Listing.remove().exec();
 
   const subdomains = new Object();
   let inputSubdomains = options.subdomains

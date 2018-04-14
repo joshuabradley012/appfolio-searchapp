@@ -174,7 +174,7 @@ async function scrapeListings(listingUrls) {
 
         for (const property of propertyKeys) {
 
-          if (listingProperty[property] !== null && typeof(listingProperty[property]) !== 'undefined' && listingProperty[property] !== '') {
+          if (listingProperty[property]) {
             // remove HTML whitespace and unnecessary phrases
             listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
             listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
@@ -182,7 +182,7 @@ async function scrapeListings(listingUrls) {
             listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
             listingProperty[property] = listingProperty[property].trim();
           }
-          
+
         }
 
         listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');

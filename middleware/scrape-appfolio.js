@@ -31,11 +31,9 @@ const Listing = require('../models/listing.js');
  * @param {Object} options - search string, subdomains, and arguments
  */
 
-//getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
+// getListings({subdomains: [{url: 'https://solarentals.appfolio.com'}, {url: 'https://rohcs.appfolio.com'}]});
 
 async function getListings(options) {
-
-  Listing.remove().exec();
 
   const subdomains = new Object();
   let inputSubdomains = options.subdomains
@@ -59,6 +57,8 @@ async function getListings(options) {
 
   if (Object.keys(allListings).length > 0) {
     console.log('Scrape complete.');
+
+    Listing.remove().exec();
 
     let listingKeys = Object.keys(allListings);
     for (const listing of listingKeys) {
@@ -194,6 +194,8 @@ async function scrapeListings(listingUrls) {
       console.log(Math.floor((loopCount / total) * 100) + '% complete (' + loopCount + '/' + total + ')');
       loopCount++;
 
+      await timeout(5000);
+
     } // end for
 
     return listingObject;
@@ -236,3 +238,5 @@ function flattenObject(obj) {
   return toReturn;
 
 }
+
+const timeout = ms => new Promise(res => setTimeout(res, ms))

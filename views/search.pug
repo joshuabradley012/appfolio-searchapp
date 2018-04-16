@@ -138,7 +138,7 @@ block content
                             - search = search.replace(/"/gi, '');
                             - var snippet = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
                             if (snippet)
-                              - previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+                              - previewText = snippet[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
 
                           p !{previewText}...
 

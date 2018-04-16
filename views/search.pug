@@ -2,7 +2,7 @@ extends layout
 
 block content
   main.grid-x
-    
+
     aside.sidebar.show-for-large
       section.inner.grid-y
 
@@ -100,7 +100,7 @@ block content
                   checked= leastSorted
                 )
                 label(for='sortLeast') Least expensive
-              span.display-inline-block  
+              span.display-inline-block
                 input(
                   type='radio'
                   name='sort'
@@ -129,16 +129,18 @@ block content
                       strong.rent= listing.rent
                       span.size= listing.size
 
-                      - var previewText = listing.text.match(/(\S+\s+){0,20}/gi)[0];
+                      if (listing.text)
 
-                      if (previewText)
-                        if (search)
-                          - search = search.replace(/"/gi, '');
-                          - var snippet = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
-                          if (snippet)
-                            - previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+                        - var previewText = listing.text.match(/(\S+\s+){0,20}/gi)[0];
 
-                        p !{previewText}...
+                        if (previewText)
+                          if (search)
+                            - search = search.replace(/"/gi, '');
+                            - var snippet = listing.text.match(new RegExp('([^\\s]*\\s+?){0,10}\\b' + search + '\\b((\\s+|.)?[^\\s]*){0,10}', 'gi'));
+                            if (snippet)
+                              - previewText = preview[0].replace(new RegExp(search, 'gi'), '<strong>$&</strong>');
+
+                          p !{previewText}...
 
                       else
 
@@ -146,5 +148,4 @@ block content
 
           else if (listings.length === 0)
 
-            h2 No results found for: #{search}  
-        
+            h2 No results found for: #{search}

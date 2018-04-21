@@ -212,7 +212,7 @@ async function scrapeListings(listingUrls) {
         console.log(Math.floor((loopCount / total) * 100) + '% complete (' + loopCount + '/' + total + ')');
         loopCount++;
 
-        await timeout(5000);
+        await timeout(2500);
 
       } // end for
 

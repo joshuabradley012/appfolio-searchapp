@@ -3,7 +3,7 @@
  * ./appfolio-searchapp//middleware/scrape-appfolio.js
  * 4/7/2018
  * Josh Bradley
- * 
+ *
  * @requires puppeteer
  */
 
@@ -48,24 +48,28 @@ async function getListings(options) {
   }
 
   const listingUrls = await scrapeSubdomains(subdomains);
-  
+
   const allListings = await scrapeListings(listingUrls);
 
-  if (Object.keys(allListings).length === 0) {
-    console.log('No listings found.');
-  }
-
-  if (Object.keys(allListings).length > 0) {
-    console.log('Scrape complete.');
-
-    Listing.remove().exec();
-
-    let listingKeys = Object.keys(allListings);
-    for (const listing of listingKeys) {
-      new Listing(allListings[listing]).save().catch((err)=>{
-        console.log(err.message);
-      });
+  if (Object.keys(allListings)) {
+    if (Object.keys(allListings).length === 0) {
+      console.log('No listings found.');
     }
+
+    if (Object.keys(allListings).length > 0) {
+      console.log('Scrape complete.');
+
+      Listing.remove().exec();
+
+      let listingKeys = Object.keys(allListings);
+      for (const listing of listingKeys) {
+        new Listing(allListings[listing]).save().catch((err)=>{
+          console.log(err.message);
+        });
+      }
+    }
+  } else {
+    console.log('allListing Object undefined');
   }
 }
 
@@ -83,35 +87,41 @@ async function scrapeSubdomains(subdomains){
 
   try {
 
-    const subdomainKeys = Object.keys(subdomains);
-    let listings = new Object();
+    if (subdomains) {
+      const subdomainKeys = Object.keys(subdomains);
+      let listings = new Object();
 
-    for (const subdomain of subdomainKeys) {
+      for (const subdomain of subdomainKeys) {
 
-      const listingPage = subdomains[subdomain] + '/listings/';
-      await page.goto(listingPage);
+        const listingPage = subdomains[subdomain] + '/listings/';
+        await page.goto(listingPage);
 
-      listings[subdomains[subdomain]] = await page.evaluate((subdomains, subdomain) => {
+        listings[subdomains[subdomain]] = await page.evaluate((subdomains, subdomain) => {
 
-        const urlObject = new Object();
-        const html = document.all[0].outerHTML;
-        const urls = html.match(/<a.*?>.*?View Details.*?<\/a>/gi);
+          const urlObject = new Object();
+          const html = document.all[0].outerHTML;
+          const urls = html.match(/<a.*?>.*?View Details.*?<\/a>/gi);
 
-        if (urls) {
-          for (let i = 0; i < urls.length; i++) {
-            const key = 'listing'  + i;
-            let url = urls[i].match(/href="(.*?)"/i)[1];
-            urlObject[key] = subdomains[subdomain] + url;
+          if (urls) {
+            for (let i = 0; i < urls.length; i++) {
+              const key = 'listing'  + i;
+              let url = urls[i].match(/href="(.*?)"/i)[1];
+              urlObject[key] = subdomains[subdomain] + url;
+            }
           }
-        }
 
-        return urlObject;
+          return urlObject;
 
-      }, subdomains, subdomain);
-      
-    } // end for
+        }, subdomains, subdomain);
 
-    return listings;
+      } // end for
+
+      return listings;
+
+    } else {
+      console.log('subdomins undefined')
+      return;
+    }
 
   } catch(e) {
     console.log(e);
@@ -133,72 +143,86 @@ async function scrapeListings(listingUrls) {
 
   try {
 
-    let listingObject = new Object();
-    let loopCount = 1;
+    if (listingUrls) {
 
-    const allListingUrls = flattenObject(listingUrls);
-    const listingKeys = Object.keys(allListingUrls);
-    const total = listingKeys.length;
+      let listingObject = new Object();
+      let loopCount = 1;
 
-    for (const listing of listingKeys) {
+      const allListingUrls = flattenObject(listingUrls);
+      const listingKeys = Object.keys(allListingUrls);
+      const total = listingKeys.length;
 
-      await page.goto(allListingUrls[listing]);
+      for (const listing of listingKeys) {
 
-      listingObject[listing] = await page.evaluate((allListingUrls, listing) => {
+        await page.goto(allListingUrls[listing]);
 
-        const listingProperty = new Object();
+        listingObject[listing] = await page.evaluate((allListingUrls, listing) => {
 
-        listingProperty['url'] = allListingUrls[listing];
+          const listingProperty = new Object();
 
-        let image = document.querySelector('.gallery__large-image-link');
-        let h1 = document.querySelector('h1');
-        let rent = document.querySelector('.sidebar__price');
-        let size = document.querySelector('.sidebar__beds-baths');
-        let contact = document.querySelector('.u-pad-bl');
-        let info = document.querySelector('.listing-detail__body');
+          listingProperty['url'] = allListingUrls[listing];
 
-        if (image) {
-          listingProperty['img'] = image.outerHTML.match(/href="(.*?)"/i)[1].replace('large', 'medium');
-        }
-        else {
-          listingProperty['img'] = 'https://assets.cdn.appfolio.com/listings/assets/listings/rental_listing/no_photo-ea9e892a45f62e048771a4b22081d1eed003a21f0658a92aa5abcfd357dd4699.png';
-        }
+          let image = document.querySelector('.gallery__large-image-link');
+          let h1 = document.querySelector('h1');
+          let rent = document.querySelector('.sidebar__price');
+          let size = document.querySelector('.sidebar__beds-baths');
+          let contact = document.querySelector('.u-pad-bl');
+          let info = document.querySelector('.listing-detail__body');
 
-        if (h1) listingProperty['address'] = h1.textContent;
-        if (rent) listingProperty['rent'] = rent.textContent;
-        if (size) listingProperty['size'] = size.textContent;
-        if (contact) listingProperty['contact'] = contact.textContent;
-        if (info) listingProperty['text'] = info.textContent;
-
-        const propertyKeys = Object.keys(listingProperty);
-
-        for (const property of propertyKeys) {
-
-          if (listingProperty[property]) {
-            // remove HTML whitespace and unnecessary phrases
-            listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
-            listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
-            listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
-            listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
-            listingProperty[property] = listingProperty[property].trim();
+          if (image) {
+            listingProperty['img'] = image.outerHTML.match(/href="(.*?)"/i)[1].replace('large', 'medium');
+          }
+          else {
+            listingProperty['img'] = 'https://assets.cdn.appfolio.com/listings/assets/listings/rental_listing/no_photo-ea9e892a45f62e048771a4b22081d1eed003a21f0658a92aa5abcfd357dd4699.png';
           }
 
-        }
+          if (h1) listingProperty['address'] = h1.textContent;
+          if (rent) listingProperty['rent'] = rent.textContent;
+          if (size) listingProperty['size'] = size.textContent;
+          if (contact) listingProperty['contact'] = contact.textContent;
+          if (info) listingProperty['text'] = info.textContent;
 
-        listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');
+          if (listingProperty) {
 
-        return listingProperty;
-        
-      }, allListingUrls, listing);
+            const propertyKeys = Object.keys(listingProperty);
 
-      console.log(Math.floor((loopCount / total) * 100) + '% complete (' + loopCount + '/' + total + ')');
-      loopCount++;
+            for (const property of propertyKeys) {
 
-      await timeout(5000);
+              if (listingProperty[property]) {
+                // remove HTML whitespace and unnecessary phrases
+                listingProperty[property] = listingProperty[property].replace(/\n/gi, ' ');
+                listingProperty[property] = listingProperty[property].replace(/\s+/gi, ' ');
+                listingProperty[property] = listingProperty[property].replace(/view\sall\slistings/gi, '');
+                listingProperty[property] = listingProperty[property].replace(/MAP/g, '');
+                listingProperty[property] = listingProperty[property].trim();
+              }
 
-    } // end for
+            }
 
-    return listingObject;
+            listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');
+
+            return listingProperty;
+
+          } else {
+            return;
+          }
+
+        }, allListingUrls, listing);
+
+        console.log(Math.floor((loopCount / total) * 100) + '% complete (' + loopCount + '/' + total + ')');
+        loopCount++;
+
+        await timeout(5000);
+
+      } // end for
+
+      return listingObject;
+
+    } else {
+
+      console.log('listingUrls undefined');
+      return;
+    }
 
   } catch(e) {
     console.log(e);

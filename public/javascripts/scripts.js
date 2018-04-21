@@ -1,9 +1,10 @@
 jQuery(document).ready(function($){
 
-  $('.close-button').on('click', function() {
+  $('.close-button').on('click', function(event) {
+    event.preventDefault();
 
     var elementData = $(this).attr('data');
-    
+
     $.ajax({
       type: 'POST',
       url: '/remove-subdomain',
@@ -11,7 +12,8 @@ jQuery(document).ready(function($){
     });
   });
 
-  $('#refreshDatabase').on('click', function() {
+  $('#refreshDatabase').one('click', function(event) {
+    event.preventDefault();
     $.ajax({
       type: 'POST',
       url: '/scrape'
@@ -46,7 +48,7 @@ jQuery(document).ready(function($){
 
       $(this).find('input').val('');
       var html = '<li class="subdomain callout" data-closable=""><span>' + inputValue + '</span><button class="close-button" data-close="" data="test">x</button></li>'
-      $('.tracked-subdomains').append(html); 
+      $('.tracked-subdomains').append(html);
 
       $.ajax({
         type: 'POST',

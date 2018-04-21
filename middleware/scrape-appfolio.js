@@ -119,8 +119,7 @@ async function scrapeSubdomains(subdomains){
       return listings;
 
     } else {
-      console.log('subdomins undefined')
-      return;
+      console.log('subdomains undefined')
     }
 
   } catch(e) {
@@ -201,8 +200,6 @@ async function scrapeListings(listingUrls) {
 
             return listingProperty;
 
-          } else {
-            return;
           }
 
         }, allListingUrls, listing);

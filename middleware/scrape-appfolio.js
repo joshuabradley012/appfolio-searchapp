@@ -177,7 +177,7 @@ async function scrapeListings(listingUrls) {
           }
 
           if (h1) listingProperty['address'] = h1.textContent;
-          if (rent) listingProperty['rent'] = rent.textContent;
+          if (rent) listingProperty['rent'] = rent.textContent.replace(/\D/g, '');;
           if (size) listingProperty['size'] = size.textContent;
           if (contact) listingProperty['contact'] = contact.textContent;
           if (info) listingProperty['text'] = info.textContent;
@@ -198,8 +198,6 @@ async function scrapeListings(listingUrls) {
               }
 
             }
-
-            listingProperty['rent'] = listingProperty['rent'].replace(/\D/g, '');
 
             return listingProperty;
 
